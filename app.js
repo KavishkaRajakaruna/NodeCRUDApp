@@ -4,6 +4,9 @@ const bodyParser = require('body-parser');
 const port = 3000;
 
 app.use(bodyParser.urlencoded({extended:true}))
+app.set('view engine', 'ejs')
+
+
 var MongoClient = require('mongodb').MongoClient;
 var db;
 
@@ -31,4 +34,13 @@ app.post('/quotes', (req, res)=>{
         res.redirect('/')
     } )
     
-})
+});
+
+app.get('/show', (req, res) => {
+     db.collection('quotes').find().toArray((err, results) => {
+
+        res.render('index.ejs', {quotes: results})
+        
+     })
+    
+});
